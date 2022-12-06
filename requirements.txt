@@ -1,0 +1,7 @@
+pandas
+pydantic
+numpy
+scipy
+matplotlib
+scikit-learn
+setuptools
