@@ -16,12 +16,12 @@ def load_spectrum(path: str) -> np.array:
     return np.loadtxt(path)
 
 
-def load_peaks(paths: List[str], kind_of_spectra: List[str]) -> np.array:
+def load_peaks(paths: List[str], kind_of_spectra: List[int]) -> np.array:
     """Loads the deconvoluted peaks and concatenates them
 
     Args:
         path (str): Path to peaks file.
-        kind_of_spectrum List[str]: kind of spectrum (in the order of paths) to be loaded.
+        kind_of_spectrum List[int]: kind of spectrum (in the order of paths) to be loaded.
 
     Returns:
         np.array: The peaks of the spectrum
@@ -33,10 +33,7 @@ def load_peaks(paths: List[str], kind_of_spectra: List[str]) -> np.array:
         if os.path.exists(path):
             peaks = np.loadtxt(path)
             peaks[:, 0] /= np.max(np.abs(peaks[:, 0]))
-            if kind_of_spectra[idx] == "raman":
-                peaks[:, 3] = int(1)
-            if kind_of_spectra[idx] == "vcd":
-                peaks[:, 3] = int(2)
+            peaks[:, 3] = kind_of_spectra[idx]
             if idx == 0:
                 concatenate = peaks
             else:
