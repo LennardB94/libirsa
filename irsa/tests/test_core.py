@@ -42,7 +42,8 @@ def test_deconvolute(reference_ir):
                     save_data=file_to_clean, normalize=True, lower=1000, higher=1800, vcd=False)
         generated = np.loadtxt(file_to_clean)
         reference = np.loadtxt(f"{TEST_DATA}/ir_exp_peaks_reference.txt")
-        assert (np.abs(np.sum(generated - reference, axis=-1)) < 1e-3).all()
+        for index in range(generated.shape[1]):
+            assert (np.abs(generated[:, index] - reference[:, index]) < 1e-3).all()
     except Exception as error:
         logging.error(error)
         assert False
