@@ -16,6 +16,22 @@ def load_spectrum(path: str) -> np.array:
     return np.loadtxt(path)
 
 
+def normalize_spectrum(spectrum: np.array, lower: float = 1000, upper: float = 1500) -> np.array:
+    """Returns the normalized and filtered spectrum
+
+    Args:
+        spectrum (np.array): The spectrum to normalize.
+        lower (float, optional): Defaults to 1000.
+        upper (float, optional): Defaults to 1500.
+
+    Returns:
+        np.array: The normalized spectrum.
+    """
+    idx = (spectrum[:, 0] > lower) & (spectrum[:, 0] < upper)
+    spectrum[:, 1] = spectrum[:, 1] / np.max(np.abs(spectrum[idx, 1]))
+    return spectrum[idx]
+
+
 def load_peaks(paths: List[str], kind_of_spectra: List[int]) -> np.array:
     """Loads the deconvoluted peaks and concatenates them
 

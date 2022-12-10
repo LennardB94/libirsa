@@ -5,3 +5,5 @@ scipy
 matplotlib
 scikit-learn
 setuptools
+plotly
+lmfit

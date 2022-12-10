@@ -127,7 +127,8 @@ class Algorithm:
         self.cutoff, self.theo_peaks, self.exp_peaks = cutoff, theo_peaks, exp_peaks
         self.algo, self.lower_bound, self.upper_bound, self.sc = algo, lower_bound, upper_bound, sc
 
-    def diagonal(self, freq_i: float, inten_i: float, exp_freq_j: float, exp_inten_j: float,
+    # this is the scoring function
+    def diagonal(self, freq_i: float, inten_i: float, exp_freq_j: float, exp_inten_j: float, 
                  exp_vcd: float = 0, inten_vcd: float = 0, width_j: float = 0, width_i: float = 0) -> float:
         """The scoring fuction of the algorithm. Implement here new stuff if you want to, and provide a new algo number
 

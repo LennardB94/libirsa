@@ -164,6 +164,6 @@ def deconvolute(spectrum: np.array,
 
     write_state = np.asarray(write_state)
     write_state = write_state.reshape(-1, 4)
-    with open(Path(f"{working_dir}/{save_data}"), "w") as f:
+    with open(Path(f"{working_dir}/{save_data}"), "w") as file:
         for i in write_state:
-            f.write(str(i[0]) + " " + str(i[1]) + " " + str(i[2]) + " 0 " + str(i[3]) + "\n")
+            file.write(str(i[0]) + " " + str(i[1]) + " " + str(i[2]) + " 0 " + str(i[3]) + "\n")
