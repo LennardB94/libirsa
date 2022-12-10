@@ -31,8 +31,8 @@ def test_load_and_normalize(reference_ir, reference_raman):
 
     assert np.max(ir[:, 1]) == 1
     assert np.max(raman[:, 1]) == 1
-    assert (reference_ir[:, 1] == ir[:, 1]).all()
-    assert (reference_raman[:, 1] == raman[:, 1]).all()
+    assert (np.abs(reference_ir[:, 1] - ir[:, 1]) < 1e-4).all()
+    assert (np.abs(reference_raman[:, 1] - raman[:, 1]) <1e-4).all()
 
 
 def test_deconvolute(reference_ir):
@@ -40,7 +40,8 @@ def test_deconvolute(reference_ir):
     try:
         deconvolute(spectrum=reference_ir, working_dir=os.path.abspath(''),
                     save_data=file_to_clean, normalize=True, lower=1000, higher=1800, vcd=False)
-        assert (np.loadtxt(file_to_clean) == np.loadtxt(f"{TEST_DATA}/ir_exp_peaks_reference.txt")).all()
+        generated = np.loadtxt(file_to_clean)
+        assert (np.abs(generated - np.loadtxt(f"{TEST_DATA}/ir_exp_peaks_reference.txt")) < 1e-4).all()
     except Exception as error:
         logging.error(error)
         assert False
@@ -52,7 +53,7 @@ def test_load_peaks():
     reference = np.loadtxt(f"{TEST_DATA}/concatenate_theo_peaks_reference.txt")
     compare = load_peaks([f"{TEST_DATA}/ir_theo_peaks_reference.txt",
                          f"{TEST_DATA}/raman_theo_peaks_reference.txt"], kind_of_spectra=[0, 1])
-    assert (reference == compare).all()
+    assert (np.abs(reference - compare) < 1e-4).all()
 
 
 def test_algorithm():
@@ -71,7 +72,7 @@ def test_algorithm():
                 "new_sigma": new_sigma, "new_eta": new_eta, "kind_of_spectrum": kind_of_spectrum}
     for key in computed.keys():
         if isinstance(reference[key], list):
-            assert (computed[key] == np.asarray(reference[key])).all()
+            assert (np.abs(computed[key] - np.asarray(reference[key])) < 1e-3).all()
         else:
             assert computed[key] == reference[key]
 
@@ -95,12 +96,12 @@ def test_voigt():
         new_eta=new_eta[kind_of_spectrum == 0])
     generated = np.concatenate([x_ir[:, np.newaxis], y_ir[:, np.newaxis]], axis=-1)
     reference_voigt = np.loadtxt(f"{TEST_DATA}/reference_voigt.txt")
-    assert (generated == reference_voigt).all()
+    assert (np.abs(generated - reference_voigt) < 1e-4).all()
 
 
 def test_get_pearson_and_spearman():
     reference_voigt_1 = np.loadtxt(f"{TEST_DATA}/reference_voigt.txt")
     reference_voigt_2 = np.loadtxt(f"{TEST_DATA}/reference_voigt.txt")
     pearson_ir, spearman_ir = get_spearman_and_pearson(spectrum_exp=reference_voigt_1, spectrum_theo=reference_voigt_2)
-    assert pearson_ir == spearman_ir
-    assert abs(pearson_ir-1) < 1e-4
+    assert abs(pearson_ir - spearman_ir) < 1e-5
+    assert abs(pearson_ir - 1) < 1e-4
