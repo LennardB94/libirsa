@@ -43,7 +43,8 @@ def test_deconvolute(reference_ir):
         generated = np.loadtxt(file_to_clean)
         reference = np.loadtxt(f"{TEST_DATA}/ir_exp_peaks_reference.txt")
         for gen, ref in zip(generated, reference):
-            assert abs(np.sum(gen - ref)) < 0.2
+            for i in range(len(gen)):
+                assert abs(gen[i] - ref[i]) < 0.2
     except Exception as error:
         logging.error(error)
         assert False
