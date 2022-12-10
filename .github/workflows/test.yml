@@ -15,7 +15,3 @@ jobs:
       - run: pip install -r requirements.txt
       - run: python -m pytest irsa/tests
         name: Test without Coverage
-      - run: python -m pytest --cache-clear --cov=service irsa/tests > pytest-coverage.txt
-        name: Unit testing & Coverage
-      - name: Comment coverage
-        uses: coroo/pytest-coverage-commentator@v1.0.2
