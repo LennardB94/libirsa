@@ -75,7 +75,7 @@ def test_algorithm():
         if isinstance(reference[key], list):
             assert (np.abs(computed[key] - np.asarray(reference[key])) < 1e-3).all()
         else:
-            assert computed[key] == reference[key]
+            assert abs(computed[key] - reference[key]) < 1e-4
 
 
 def test_voigt():
