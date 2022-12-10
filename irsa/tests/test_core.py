@@ -32,7 +32,7 @@ def test_load_and_normalize(reference_ir, reference_raman):
     assert np.max(ir[:, 1]) == 1
     assert np.max(raman[:, 1]) == 1
     assert (np.abs(reference_ir[:, 1] - ir[:, 1]) < 1e-4).all()
-    assert (np.abs(reference_raman[:, 1] - raman[:, 1]) <1e-4).all()
+    assert (np.abs(reference_raman[:, 1] - raman[:, 1]) < 1e-4).all()
 
 
 def test_deconvolute(reference_ir):
@@ -41,7 +41,8 @@ def test_deconvolute(reference_ir):
         deconvolute(spectrum=reference_ir, working_dir=os.path.abspath(''),
                     save_data=file_to_clean, normalize=True, lower=1000, higher=1800, vcd=False)
         generated = np.loadtxt(file_to_clean)
-        assert (np.abs(generated - np.loadtxt(f"{TEST_DATA}/ir_exp_peaks_reference.txt")) < 1e-4).all()
+        reference = np.loadtxt(f"{TEST_DATA}/ir_exp_peaks_reference.txt")
+        assert (np.abs(generated - reference) < 1e-3).all()
     except Exception as error:
         logging.error(error)
         assert False
